@@ -12,24 +12,8 @@ Student ID: SLAE-1134
 Compilation instructions:
 	gcc -o shellcode shellcode.c -fno-stack-protector -z execstack
 
-NASM to Shellcode (assumes dual_stack_bind_shell.nasm):
-	#!/bin/bash
-	
-	binary=dual_stack_bind_shell
-		
-	echo '[+] Assembling with Nasm ... '
-	nasm -f elf32 -o "${binary}.o" "${binary}.nasm"
-	
-	echo '[+] Linking ...'
-	ld -o "${binary}" "${binary}.o" -fno-stack-protector -shared -z execstack
-	
-	echo '[+] Dumping shellcode ...'
-	objdump -d "./${binary}"|grep '[0-9a-f]:'|grep -v 'file'|cut -f2 -d:|cut -f1-6 -d' '|tr -s ' '|tr '\t' ' '|sed 's/ $//g'|sed 's/ /\\x/g'|paste -d '' -s |sed 's/^/"/'|sed 's/$/"/g'
-	
-	echo '[+] Cleaning up'
-	rm -f "${binary}.o ${binary}"
-
-	echo '[+] Done!'
+Supporting Code, including IPv4 only and IPv6 only bind shells:
+	https://github.com/kkirsche/SLAE/tree/master/assignment_1-bind_shell
 
 Commented NASM:
 global _start
