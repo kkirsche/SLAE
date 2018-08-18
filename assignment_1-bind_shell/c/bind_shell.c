@@ -16,7 +16,7 @@ int main() {
   // SOCK_STREAM ensures it's a bi-directional communication
   // 0 says we're using the Internet Protocol (IP)
   sockfd = socket(AF_INET6, SOCK_STREAM, 0);
-  
+
   // int setsockopt(int sockfd, int level, int optname,
   //                const void *optval, socklen_t optlen);
   setsockopt(sockfd, IPPROTO_IPV6, IPV6_V6ONLY, &NO, sizeof(NO));
