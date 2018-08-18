@@ -1,8 +1,10 @@
 /*
 # Exploit Title: Linux x86 Dual Network Stack (IPv4 and IPv6) Bind TCP Shellcode
-# Date: August 18, 2018
-# Exploit Author: Kevin Kirsche
-# Tested on: Ubuntu 18.04 with gcc 7.3.0
+# Date: 2018-08-18
+# Shellcode Author: Kevin Kirsche
+# Shellcode Repository: https://github.com/kkirsche/SLAE/tree/master/assignment_1-bind_shell
+# Tested on: Shell on Ubuntu 18.04 with gcc 7.3.0 / Connected from Kali 2018.2
+
 # This shellcode will listen on port 1337 and give you /bin/sh
 
 This shellcode has been created for completing the requirements of the SecurityTube Linux Assembly Expert certification:
@@ -11,9 +13,6 @@ Student ID: SLAE-1134
 
 Compilation instructions:
 	gcc -o shellcode shellcode.c -fno-stack-protector -z execstack
-
-Supporting Code, including IPv4 only and IPv6 only bind shells:
-	https://github.com/kkirsche/SLAE/tree/master/assignment_1-bind_shell
 
 Commented NASM:
 global _start
