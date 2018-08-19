@@ -1,15 +1,17 @@
 #!/bin/bash
 
-echo '[+] Assembling with Nasm ... '
-nasm -f elf32 -o ipv4_bind_shell.o ipv4_bind_shell.nasm
-nasm -f elf32 -o ipv6_bind_shell.o ipv6_bind_shell.nasm
+binary=ipv4_bind_shell
 
+echo '[+] Assembling with Nasm ... '
+nasm -f elf32 -o "${binary}.o" "${binary}.nasm"
 
 echo '[+] Linking ...'
-ld -o ipv4_bind_shell ipv4_bind_shell.o -fno-stack-protector -shared -z execstack
-ld -o ipv6_bind_shell ipv6_bind_shell.o -fno-stack-protector -shared -z execstack
+ld -o "${binary}" "${binary}.o" -fno-stack-protector -shared -z execstack
+
+echo '[+] Dumping shellcode ...'
+objdump -d "./${binary}"|grep '[0-9a-f]:'|grep -v 'file'|cut -f2 -d:|cut -f1-6 -d' '|tr -s ' '|tr '\t' ' '|sed 's/ $//g'|sed 's/ /\\x/g'|paste -d '' -s |sed 's/^/"/'|sed 's/$/"/g'
+
+echo '[+] Removing object file'
+rm -f "${binary}.o"
 
 echo '[+] Done!'
-
-
-
