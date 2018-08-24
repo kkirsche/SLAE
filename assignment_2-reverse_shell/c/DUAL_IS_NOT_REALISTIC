@@ -1,0 +1,1 @@
+If we try to do a reverse shell on both IPv4 and IPv6, we have to do a fair amount of error checking to see if we had already gotten a shell on the other IP protocol version, and either try the connection or skip it. As such, we won't try to do this.
