@@ -1,4 +1,15 @@
 #!/usr/bin/env python3
+# Exploit Title: Linux x86 IPv6 Reverse TCP Shellcode Generator (94 bytes)
+# Date: 2018-08-26
+# Shellcode Author: Kevin Kirsche
+# Shellcode Repository: https://github.com/kkirsche/SLAE/tree/master/assignment_2-reverse_shell
+# Tested on: Shell on Ubuntu 18.04 with gcc 7.3.0 / Connecting to Kali 2018.2
+
+# This shellcode will connect to fd15:4ba5:5a2b:1002:61b7:23a9:ad3d:5509 on port 1337 and give you /bin/sh
+
+#This shellcode has been created for completing the requirements of the SecurityTube Linux Assembly Expert certification:
+#http://securitytube-training.com/online-courses/securitytube-linux-assembly-expert/
+#Student ID: SLAE-1134
 
 from argparse import ArgumentParser
 from ipaddress import ip_address
