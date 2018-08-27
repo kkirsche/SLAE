@@ -7,7 +7,7 @@ _start:
 loop_page:
   ; view your page size with `getconf PAGESIZE`
   ; getconf PAGESIZE == 4096 decimal / 0x1000 hex
-  or dx, 0xfff        ; 0xfff hex == 4065 decimal
+  or dx, 0xfff        ; 0xfff hex == 4095 decimal
 next_addr:
   inc edx             ; increment our pointer by one
   lea ebx, [edx+0x4]    ; load where our potential eggs are
