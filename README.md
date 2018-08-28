@@ -12,3 +12,5 @@ Student ID: SLAE-1134
 * Assignment 2: [Linux x86 IPv4 and IPv6 TCP Reverse Shell](https://deceiveyour.team/2018/08/26/tcp-ipv4-and-ipv6-reverse-shell/)
 * Assignment 3: [Linux x86 Egghunter](https://deceiveyour.team/2018/08/27/x86-egghunter/)
 * Assignment 4: [Linux x86 Two-Byte Shift Custom Encoder](https://deceiveyour.team/2018/08/27/linux-x86-two-byte-shift-encoder/)
+* Assignment 5:
+    * Part 1: [Analyzing Metasploit’s linux/x86/shell_find_tag payload](https://deceiveyour.team/2018/08/27/analyzing-metasploits-linux-x86-shell_find_tag-payload/)
