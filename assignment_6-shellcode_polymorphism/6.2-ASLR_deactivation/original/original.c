@@ -2,6 +2,7 @@
 Title:	Linux x86 ASLR deactivation - 83 bytes
 Author:	Jean Pascal Pereira <pereira@secbiz.de>
 Web:	http://0xffe4.org
+Original website: http://shell-storm.org/shellcode/files/shellcode-813.php
 
 
 Disassembly of section .text:
