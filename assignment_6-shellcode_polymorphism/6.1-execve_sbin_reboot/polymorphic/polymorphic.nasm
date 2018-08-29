@@ -1,6 +1,7 @@
 ; Filename: original.nasm
-; Author: TheWorm
-; Website: http://shell-storm.org/shellcode/files/shellcode-477.php
+; Original Author: TheWorm
+; Polymorphic Modification: d3c3pt10n (Kevin Kirsche)
+; Original Website: http://shell-storm.org/shellcode/files/shellcode-477.php
 ; Date: 11/07/2009
 ; Size: 41 bytes
 
