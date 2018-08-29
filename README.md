@@ -14,5 +14,5 @@ Student ID: SLAE-1134
 * Assignment 4: [Linux x86 Two-Byte Shift Custom Encoder](https://deceiveyour.team/2018/08/27/linux-x86-two-byte-shift-encoder/)
 * Assignment 5:
     * Part 1: [Analyzing Metasploit’s linux/x86/shell_find_tag payload](https://deceiveyour.team/2018/08/27/analyzing-metasploits-linux-x86-shell_find_tag-payload/)
-    * Part 2: [https://deceiveyour.team/2018/08/28/analyzing-metasploits-linux-x86-read_file-payload/](https://deceiveyour.team/2018/08/28/analyzing-metasploits-linux-x86-read_file-payload/)
+    * Part 2: [Analyzing Metasploit’s linux/x86/read_file payload](https://deceiveyour.team/2018/08/28/analyzing-metasploits-linux-x86-read_file-payload/)
     * Part 3: [Analyzing Metasploit’s linux/x86/adduser payload](https://deceiveyour.team/2018/08/28/analyzing-metasploits-linux-x86-adduser-payload//)
