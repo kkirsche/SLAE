@@ -1,3 +1,7 @@
+; Filename: original.nasm
+; Author: Jean Pascal Pereira <pereira@secbiz.de>
+; Website: http://shell-storm.org/shellcode/files/shellcode-813.php
+; Size: 83 bytes
 global _start
 
 section .text
