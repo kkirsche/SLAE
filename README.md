@@ -16,3 +16,5 @@ Student ID: SLAE-1134
     * Part 1: [Analyzing Metasploit’s linux/x86/shell_find_tag payload](https://deceiveyour.team/2018/08/27/analyzing-metasploits-linux-x86-shell_find_tag-payload/)
     * Part 2: [Analyzing Metasploit’s linux/x86/read_file payload](https://deceiveyour.team/2018/08/28/analyzing-metasploits-linux-x86-read_file-payload/)
     * Part 3: [Analyzing Metasploit’s linux/x86/adduser payload](https://deceiveyour.team/2018/08/28/analyzing-metasploits-linux-x86-adduser-payload//)
+* Assignment 6: [Creating 3 Polymorphic Shellcode Variants of Shell-Storm samples
+](https://deceiveyour.team/2018/08/29/creating-3-polymorphic-shellcode-variants-of-shell-storm-samples/)
