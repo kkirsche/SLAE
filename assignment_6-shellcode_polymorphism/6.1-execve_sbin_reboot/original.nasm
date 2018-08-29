@@ -10,7 +10,7 @@ section .text
 _start:
   push 0xb          ; sys_execve
   pop eax           ; pop into EAX
-  cltd              ; cltd converts the signed long in EAX to a signed double long in EDX:EAX
+  cdq               ; cltd converts the signed long in EAX to a signed double long in EDX:EAX
                     ; by extending the most-significant bit (sign bit) of EAX into all bits of EDX.
                     ; Thus we zero out EDX
   push edx          ; null string terminator
