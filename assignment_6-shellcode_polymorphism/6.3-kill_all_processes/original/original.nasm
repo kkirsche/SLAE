@@ -1,6 +1,7 @@
 ; linux/x86 kill all processes 9 bytes
 ; root@thegibson
 ; 2010-01-14
+; website: http://shell-storm.org/shellcode/files/shellcode-564.php
  
 section .text
         global _start
