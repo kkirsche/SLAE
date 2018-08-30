@@ -1,7 +1,7 @@
 /*
 	Author: Kevin Kirsche
 	Date: August 30, 2018
-  Compile: gcc -o decrypt decrypt.c -lcrypto -lssl
+  Compile: gcc -o encrypt encrypt.c -lcrypto -lssl
   Requires package (debian / ubuntu): openssl libssl-dev
 */
 
