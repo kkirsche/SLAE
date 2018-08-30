@@ -24,11 +24,11 @@ int decrypt(unsigned char *ciphertext, int ciphertext_len,
   EVP_CIPHER_CTX *ctx;
   int len=0, plaintext_len=0, ret;
 
-  /* Create and initialise the context */
+  /* Create and initialize the context */
   if(!(ctx = EVP_CIPHER_CTX_new()))
     handleErrors();
 
-  /* Initialise the decryption operation. */
+  /* Initialize the decryption operation. */
   if(!EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL))
     handleErrors();
 
@@ -36,7 +36,7 @@ int decrypt(unsigned char *ciphertext, int ciphertext_len,
   if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL))
     handleErrors();
 
-  /* Initialise key and IV */
+  /* Initialize key and IV */
   if(!EVP_DecryptInit_ex(ctx, NULL, NULL, key, iv)) handleErrors();
 
   /* Provide the message to be decrypted, and obtain the plaintext output.
@@ -57,7 +57,7 @@ int decrypt(unsigned char *ciphertext, int ciphertext_len,
   if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, 16, tag))
     handleErrors();
 
-  /* Finalise the decryption. A positive return value indicates success,
+  /* Finalize the decryption. A positive return value indicates success,
    * anything else is a failure - the plaintext is not trustworthy.
    */
   ret = EVP_DecryptFinal_ex(ctx, plaintext + plaintext_len, &len);
