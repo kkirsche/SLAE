@@ -18,3 +18,4 @@ Student ID: SLAE-1134
     * Part 3: [Analyzing Metasploit’s linux/x86/adduser payload](https://deceiveyour.team/2018/08/28/analyzing-metasploits-linux-x86-adduser-payload//)
 * Assignment 6: [Creating 3 Polymorphic Shellcode Variants of Shell-Storm samples
 ](https://deceiveyour.team/2018/08/29/creating-3-polymorphic-shellcode-variants-of-shell-storm-samples/)
+* Assignment 7: [Creating an AES256-GCM Shellcode Crypter](https://deceiveyour.team/2018/08/30/creating-an-aes256-gcm-shellcode-crypter/)
