@@ -91,7 +91,6 @@ int main (int argc, char **argv)
   int counter;
 
   gethostname(key, 32);
-  printf("Key:\n%s\n\n", key);
 
 	/* generate encryption key from user entered key */
 	if(!PKCS5_PBKDF2_HMAC_SHA1(key, strlen(key),NULL,0,1000,32,key))
